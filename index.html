@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barcode &amp; QR Labels for Zoho CRM — NEXUS MICRO</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Dynamic print style tag updated by label_templates.js -->
+  <style id="nexus-dynamic-print-style"></style>
+</head>
+<body>
+  <!-- TOP APP HEADER -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="18" rx="2"></rect>
+          <path d="M6 7v10M10 7v10M14 7v6M18 7v10"></path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-title">Barcode &amp; QR Labels for Zoho CRM</h1>
+        <p class="brand-subtitle">By NEXUS MICRO · Avery Sheets &amp; Thermal Printer Suite</p>
+      </div>
+      <span id="license-badge" class="badge badge-free">Free Plan · 5 Labels/batch</span>
+    </div>
+
+    <div class="header-actions">
+      <div id="env-badge" class="badge badge-demo">
+        <span class="status-dot"></span>
+        <span id="env-badge-text">Demo Mode</span>
+      </div>
+
+      <button id="btn-toggle-tier" class="btn btn-xs" style="display: none;" title="Developer debug toggle">
+        Switch to Pro
+      </button>
+
+      <button id="btn-upgrade-header" class="btn btn-upgrade" title="Upgrade to Pro Lifetime Deal">
+        ⚡ Upgrade to Pro ($9.99)
+      </button>
+
+      <button id="btn-sample-data" class="btn btn-secondary" title="Load sample product data">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        Sample Product
+      </button>
+
+      <button id="btn-print" class="btn btn-primary" title="Print Labels (Ctrl+P)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        Print Labels
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN DUAL-PANE WORKSPACE -->
+  <main class="app-workspace">
+    <!-- LEFT CONFIGURATION SIDEBAR -->
+    <aside class="sidebar-panel">
+      <!-- Section 1: Product / Record Data -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">1. Product Information</h2>
+          <span class="card-help" title="Data mapped automatically from your Zoho CRM Record">Zoho CRM Field</span>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="input-product-name">Product Name / Title</label>
+            <input type="text" id="input-product-name" class="form-control" placeholder="e.g. Sony WH-1000XM5 Headphones" value="Sony WH-1000XM5 Wireless Headphones">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="input-sku">SKU / Barcode Value</label>
+              <input type="text" id="input-sku" class="form-control font-mono" placeholder="e.g. 4905524987654" value="4905524987652">
+            </div>
+            <div class="form-group col">
+              <label for="input-price">Price / Currency</label>
+              <input type="text" id="input-price" class="form-control" placeholder="e.g. $399.99" value="$399.99">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input-subtitle">Subtitle / Variant / Specs</label>
+            <input type="text" id="input-subtitle" class="form-control" placeholder="e.g. Black · Over-Ear ANC" value="Midnight Black · Over-Ear ANC">
+          </div>
+
+          <div class="form-group">
+            <label for="input-qr-data">QR Code URL or Asset Tracking ID</label>
+            <input type="text" id="input-qr-data" class="form-control font-mono text-sm" placeholder="e.g. https://crm.zoho.com/..." value="https://inventory.nexus.ai/p/SNY-1000XM5">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Barcode & QR Format -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">2. Symbology &amp; Styling</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="select-symbology">Code Type</label>
+              <select id="select-symbology" class="form-control">
+                <option value="CODE128">Code 128 (Any Text / SKU)</option>
+                <option value="EAN13" selected>EAN-13 (Retail 13-digit)</option>
+                <option value="UPCA">UPC-A (US Retail 12-digit)</option>
+                <option value="QR">QR Code (URLs &amp; Tracking)</option>
+                <option value="DUAL">Dual (Barcode + Mini QR)</option>
+              </select>
+            </div>
+            <div class="form-group col">
+              <label for="select-label-layout">Label Layout Style</label>
+              <select id="select-label-layout" class="form-control">
+                <option value="standard" selected>Standard (Title + Barcode + Price)</option>
+                <option value="compact">Compact (Barcode + SKU only)</option>
+                <option value="retail">Retail Shelf (Large Price + Barcode)</option>
+                <option value="shipping">Asset / Warehouse Tag</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="input-barcode-height">Barcode Height (<span id="val-barcode-height">40</span>px)</label>
+              <input type="range" id="input-barcode-height" min="20" max="90" value="40" class="form-range">
+            </div>
+            <div class="form-group col">
+              <label for="input-font-size">Font Size (<span id="val-font-size">11</span>pt)</label>
+              <input type="range" id="input-font-size" min="8" max="18" value="11" class="form-range">
+            </div>
+          </div>
+
+          <div class="form-checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="check-show-text" checked>
+              <span>Show human-readable text below barcode</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="check-show-price" checked>
+              <span>Display Price badge</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Paper Template & Avery Sheet Layout -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">3. Paper &amp; Sheet Geometry</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="select-template">Physical Label Template</label>
+            <select id="select-template" class="form-control font-semibold">
+              <optgroup label="Standard Sheet Labels (Letter)">
+                <option value="avery_5160" selected>Avery 5160 — 30/page (3×10, 2.625" × 1")</option>
+                <option value="avery_5163">Avery 5163 — 10/page (2×5, 4" × 2" Shipping)</option>
+                <option value="avery_5167">Avery 5167 — 80/page (4×20, 1.75" × 0.5" Mini)</option>
+              </optgroup>
+              <optgroup label="Standard Sheet Labels (A4 European / Global)">
+                <option value="a4_l7160">Avery / Herma L7160 — 21/page (3×7, 63.5 × 38.1mm)</option>
+              </optgroup>
+              <optgroup label="Direct Thermal Roll (Zebra / Dymo / Munbyn)">
+                <option value="thermal_4x6">Thermal Shipping 4" × 6" (101.6 × 152.4mm)</option>
+                <option value="thermal_2x1">Thermal Product 2.25" × 1.25" (57.15 × 31.75mm)</option>
+                <option value="thermal_50x30">Thermal Jewelry / Shelf 50 × 30mm</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="input-quantity">Total Labels</label>
+              <input type="number" id="input-quantity" class="form-control" min="1" max="1000" value="30">
+            </div>
+            <div class="form-group col">
+              <label for="input-offset" title="Skip already used labels on an Avery sheet">
+                Start at Position
+                <span class="badge-feature">Save Sheets</span>
+              </label>
+              <input type="number" id="input-offset" class="form-control" min="1" max="80" value="1" title="Start printing at label #N so you can reuse partially used sheets!">
+            </div>
+          </div>
+
+          <div class="template-summary" id="template-summary-text">
+            Letter Sheet · 3 columns × 10 rows · 30 labels/page · 1 Page total
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT PREVIEW CANVAS -->
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <div class="toolbar-info">
+          <span class="preview-title">Live Print Preview</span>
+          <span class="preview-stats" id="preview-page-indicator">Showing Page 1 of 1 (30 labels)</span>
+        </div>
+
+        <div class="toolbar-controls">
+          <label class="checkbox-label text-xs">
+            <input type="checkbox" id="check-guides" checked>
+            <span>Show Cut Guides</span>
+          </label>
+
+          <div class="zoom-controls">
+            <button id="btn-toggle-canvas" class="btn btn-xs" title="Toggle Eye-Comfort Studio Canvas">🌙 Studio Slate</button>
+            <button id="btn-zoom-out" class="btn-icon" title="Zoom Out">−</button>
+            <span id="label-zoom" class="zoom-value">75%</span>
+            <button id="btn-zoom-in" class="btn-icon" title="Zoom In">+</button>
+            <button id="btn-zoom-fit" class="btn btn-xs">Fit Width</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrollable Preview Viewport -->
+      <div class="preview-viewport" id="preview-viewport">
+        <div class="preview-container" id="preview-container">
+          <!-- Rendered virtual sheet will be placed here -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- HIDDEN PRINT STAGING AREA FOR DIRECT HARDWARE PRINTING -->
+  <div id="nexus-print-area" class="nexus-print-container" aria-hidden="true"></div>
+
+  <!-- UPGRADE TO PRO MODAL DIALOG -->
+  <div id="nexus-upgrade-modal" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-header-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+        <div>
+          <h3 class="modal-title">Upgrade to NEXUS MICRO Pro</h3>
+          <p class="modal-subtitle">One-Time Payment · Lifetime Deal for Your Whole Company</p>
+        </div>
+        <button id="btn-close-modal" class="btn-close" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="pricing-banner">
+          <div class="pricing-headline">
+            <span class="price-strikethrough">$49 USD</span>
+            <span class="price-tag">$9.99 USD</span>
+            <span class="price-badge">80% OFF · Inaugural Launch</span>
+          </div>
+          <p class="pricing-subtext">Pay once, own it forever. Unlimited users in your Zoho CRM.</p>
+        </div>
+
+        <div class="feature-comparison">
+          <div class="feature-row">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text"><strong>Unlimited Labels:</strong> Print 1 to 1,000+ labels per batch (Free Plan: max 5)</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text"><strong>All Physical Templates:</strong> Avery 5160, 5163, 5167, A4 L7160 &amp; Zebra/Dymo Thermals (Free: Avery 5160 only)</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text"><strong>High-Density QR &amp; Dual Codes:</strong> URLs, asset tracking &amp; 2D QR (Free: Code 128 only)</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text"><strong>Save Sheets (Offset):</strong> Start printing at label #N to reuse partially peeled sheets</span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text"><strong>Zero Subscriptions:</strong> No monthly invoices, no renewal surprises</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btn-modal-dismiss" class="btn btn-secondary">Continue with Free Plan</button>
+        <button id="btn-modal-buy" class="btn btn-primary btn-modal-buy">
+          Unlock Pro License ($9.99 USD)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OFFLINE BUNDLED LIBRARIES -->
+  <script src="lib/ZohoEmbededAppSDK.min.js"></script>
+  <script src="lib/JsBarcode.all.min.js"></script>
+  <script src="lib/qrcode.min.js"></script>
+
+  <!-- NEXUS CORE ENGINES -->
+  <script src="label_templates.js"></script>
+  <script src="barcode_engine.js"></script>
+
+  <!-- APPLICATION CONTROLLER -->
+  <script src="assistant.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
